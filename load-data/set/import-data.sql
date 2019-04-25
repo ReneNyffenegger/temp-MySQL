@@ -1,5 +1,5 @@
 --
---  "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" --local-infile -u rene -prene tq84_db < import-data.sql
+--  "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" --local-infile --show-warnings -u rene -prene tq84_db < import-data.sql
 --
 drop table if exists csv_set;
 
