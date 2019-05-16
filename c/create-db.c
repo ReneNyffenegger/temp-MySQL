@@ -45,10 +45,10 @@ void insert_records() {
   MYSQL_TIME  dat    ; bool dat_is_null;
 
    
-  insert_values[0].buffer_type = MYSQL_TYPE_LONG    ; insert_values[0].buffer = (char*) &num ; insert_values[0].is_null = &int_is_null;
-  insert_values[1].buffer_type = MYSQL_TYPE_DOUBLE  ; insert_values[1].buffer = (char*) &dbl ; insert_values[1].is_null = &dbl_is_null;
-  insert_values[2].buffer_type = MYSQL_TYPE_STRING  ; insert_values[2].buffer = (char*)  txt ; insert_values[2].is_null = &txt_is_null; insert_values[2].length = &txt_len; insert_values[2].buffer_length = 20; 
-  insert_values[3].buffer_type = MYSQL_TYPE_DATETIME; insert_values[3].buffer = (char*) &dat ; insert_values[3].is_null = &dat_is_null; // buffer_length = sizeof(MYSQL_TIME); // or MYSQL_TYPE_DATE or MYSQL_TYPE_TIME or MYSQL_TYPE_TIMESTAMP ?
+  insert_values[0].buffer_type = MYSQL_TYPE_LONG      ; insert_values[0].buffer = (char*) &num ; insert_values[0].is_null = &int_is_null;
+  insert_values[1].buffer_type = MYSQL_TYPE_DOUBLE    ; insert_values[1].buffer = (char*) &dbl ; insert_values[1].is_null = &dbl_is_null;
+  insert_values[2].buffer_type = MYSQL_TYPE_VAR_STRING; insert_values[2].buffer = (char*)  txt ; insert_values[2].is_null = &txt_is_null; insert_values[2].length = &txt_len; insert_values[2].buffer_length = 20; 
+  insert_values[3].buffer_type = MYSQL_TYPE_DATETIME  ; insert_values[3].buffer = (char*) &dat ; insert_values[3].is_null = &dat_is_null; // buffer_length = sizeof(MYSQL_TIME); // or MYSQL_TYPE_DATE or MYSQL_TYPE_TIME or MYSQL_TYPE_TIMESTAMP ?
 
 
   if (mysql_stmt_bind_param(stmt, insert_values)) {
@@ -64,10 +64,10 @@ void insert_records() {
   printf("n\n");
 
 
-  int_is_null = false; num =  42;
-  dbl_is_null = false; dbl =  9.99;
+  int_is_null = false; num =  -5;
+  dbl_is_null = false; dbl =  -5.55;
   txt_is_null = false; strcpy(txt, "1st record"); txt_len = strlen("1st record");
-  dat_is_null = false; dat.year = 2019; dat.month = 8; dat.day = 28; dat.hour = 22; dat.minute = 23; dat.second = 24;
+  dat_is_null = false; dat.year = 2015; dat.month = 5; dat.day = 15; dat.hour = 17; dat.minute = 55; dat.second = 58;
 
   printf("x\n");
 
@@ -80,6 +80,20 @@ void insert_records() {
   }
 
   printf("Inserted records: %d\n", mysql_stmt_affected_rows(stmt));
+
+  int_is_null = false; num =  42;
+  dbl_is_null = false; dbl =  9.99;
+  txt_is_null = false; strcpy(txt, "Ren\xc3\xa9"); txt_len = strlen("Ren\xc3\xa9");
+  dat_is_null = false; dat.year = 2019; dat.month = 8; dat.day = 28; dat.hour = 22; dat.minute = 23; dat.second = 24;
+
+  if (mysql_stmt_execute(stmt)) {
+    printf("y\n");
+    fprintf(stderr, "Could not execute insert statement. %s\n", mysql_error(con));
+    mysql_stmt_close(stmt);
+    mysql_close(con);
+    exit(1);
+  }
+  
 
 
   query("insert into tq84_tab values(2, 1.1, 'one', null)");
