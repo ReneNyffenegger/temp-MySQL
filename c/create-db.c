@@ -160,9 +160,11 @@ int main() {
   }
 
   show_variables_like_characterset();
+  query( "set names utf8mb4");
+  show_variables_like_characterset();
 
   query( "drop database if exists some_db"                                                 );
-  query( "create database some_db"                                                         );
+  query( "create database some_db character set utf8mb4"                                   );
   query( "grant all on some_db.* to rene@'%'"                                              );
   query( "use some_db"                                                                     );
   query( "create table tq84_tab (num integer, dbl double,  txt varchar(20), dat datetime)" );
