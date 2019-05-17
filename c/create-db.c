@@ -13,6 +13,37 @@ void query(const char *stmt) {
 
 }
 
+void show_variables_like_characterset() {
+
+  query("show variables like '%character%'");
+
+  MYSQL_RES *res = mysql_store_result(con);
+
+  if (! res) {
+    fprintf(stderr, "Error: %s\n", mysql_error(con));
+    mysql_close(con);
+    exit(1);
+  }
+
+  int nof_cols = mysql_num_fields(res);
+  printf("Number of columns: %d\n", nof_cols);
+
+  if (nof_cols != 2) {
+    exit(1);
+  }
+
+  MYSQL_ROW rec;
+  while (rec = mysql_fetch_row(res)) {
+
+//  for (int col=0; col<nof_fields; col++) {
+       printf("%-30s %-30s\n", rec[0], rec[1]);
+//  }
+
+  }
+
+
+}
+
 void insert_records() {
 
   MYSQL_STMT *stmt;
@@ -127,6 +158,8 @@ int main() {
     exit(1);
 
   }
+
+  show_variables_like_characterset();
 
   query( "drop database if exists some_db"                                                 );
   query( "create database some_db"                                                         );
