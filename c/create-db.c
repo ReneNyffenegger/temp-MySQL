@@ -125,6 +125,21 @@ void insert_records() {
     exit(1);
   }
   
+  printf("Inserted records: %d\n", mysql_stmt_affected_rows(stmt));
+
+  int_is_null = false; num =  7;
+  dbl_is_null = false; dbl =  7.77;
+  txt_is_null = false; strcpy(txt, "\xe6\x96\xbd" "\xE4\xBC\xA6" "\xE8\xB4\x9D" "\xE6\xA0\xBC"); txt_len = strlen("\xe6\x96\xbd" "\xE4\xBC\xA6" "\xE8\xB4\x9D" "\xE6\xA0\xBC");
+  dat_is_null = false; dat.year = 2000; dat.month = 1; dat.day = 1; dat.hour = 1; dat.minute = 1; dat.second = 1;
+
+  if (mysql_stmt_execute(stmt)) {
+    printf("y\n");
+    fprintf(stderr, "Could not execute insert statement. %s\n", mysql_error(con));
+    mysql_stmt_close(stmt);
+    mysql_close(con);
+    exit(1);
+  }
+  
 
 
   query("insert into tq84_tab values(2, 1.1, 'one', null)");
