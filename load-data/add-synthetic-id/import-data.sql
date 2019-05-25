@@ -4,7 +4,7 @@
 drop table if exists csv_without_id;
 
 create table csv_without_id (
-   id      integer        primary key,
+   id      integer        auto_increment primary key,
    col_1   varchar(10),
    col_2   varchar(10)
 );
@@ -13,7 +13,7 @@ create table csv_without_id (
 --
 --   Use a variable to add an synthetic id.
 --
-set @id := 0;
+-- set @id := 0; 
 
 load data local infile 'data.csv'
    into table csv_without_id
@@ -24,8 +24,8 @@ load data local infile 'data.csv'
   col_1,
   col_2
 )
-set
-  id = @id := @id + 1
+-- set
+--   id = @id := @id + 1 -- Setting user variables within expressions is deprecated and will be removed in a future release
 ;
 
 select * from csv_without_id;
